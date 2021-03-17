@@ -85,10 +85,12 @@ const clickCell = (e) => {
       if (cell.textContent == player)
         gameData.push(parseInt(cell.getAttribute("data-pos")));
     });
-
+    localStorage.setItem(player, gameData);
+    console.log("Local Storage:", localStorage);
     let winReponse = checkWinCombinations(gameData);
     if (winReponse.flag) {
       victorySound.play();
+      localStorage.clear();
       highlightCombination(winReponse.combination);
       showFinalScreen(`Winner is ${player}`);
     } else {
