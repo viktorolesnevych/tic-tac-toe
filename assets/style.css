@@ -11,8 +11,7 @@
 }
 
 #area {
-  width: 306px;
-  border: 1px solid #000;
+  width: 309px;
   margin: 0 auto;
   font-size: 0;
 }
@@ -21,6 +20,7 @@
   text-align: center;
   margin-bottom: 40px;
   font-size: 32px;
+  font-weight: bold;
 }
 .cell {
   width: 100px;
@@ -28,16 +28,31 @@
   text-align: center;
   display: inline-block;
   font-size: 90px;
-  border: 1px solid #000;
+  border: 1.5px solid white;
   cursor: pointer;
   vertical-align: middle;
+  background-color: black;
+  color: white;
 }
+
+.cell.selected {
+  cursor: not-allowed;
+}
+
+.cell.winning {
+  background-color: red;
+}
+
 .logo {
   text-align: center;
-  font-size: 48px;
+  font-size: 64px;
+  font-family: "Poppins", sans-serif;
 }
 .cell:hover {
-  background-color: #f1f1f1;
+  background-color: grey;
+}
+.cell.selected:hover {
+  background-color: black;
 }
 
 .winning-message {
@@ -48,7 +63,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.9);
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   color: white;
   font-size: 5rem;
