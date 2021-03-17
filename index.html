@@ -8,19 +8,29 @@
     <title>Document</title>
 </head>
 <body>
+    <div class="logo">
+        TIC TAC TOE
+    </div>
     <div class="main_content">
+        <div class="currentPlayer">
+            <span>It's Players X turn</span>
+        </div>
         <div id="area">
-            <div class="cell" pos="1"></div>
-            <div class="cell" pos="2"></div>
-            <div class="cell" pos="3"></div>
-            <div class="cell" pos="4"></div>
-            <div class="cell" pos="5"></div>
-            <div class="cell" pos="6"></div>
-            <div class="cell" pos="7"></div>
-            <div class="cell" pos="8"></div>
-            <div class="cell" pos="9"></div>
+            <div class="cell" data-pos="1"></div>
+            <div class="cell" data-pos="2"></div>
+            <div class="cell" data-pos="3"></div>
+            <div class="cell" data-pos="4"></div>
+            <div class="cell" data-pos="5"></div>
+            <div class="cell" data-pos="6"></div>
+            <div class="cell" data-pos="7"></div>
+            <div class="cell" data-pos="8"></div>
+            <div class="cell" data-pos="9"></div>
         </div>
     </div>
+    <div class="winning-message" id="winningMessage">
+        <div data-winning-message-text></div>
+        <button id="restartButton">Restart</button>
+     </div>
     <script src="script.js"></script>
 </body>
 </html>

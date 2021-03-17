@@ -5,6 +5,7 @@
 
 .main_content {
   display: flex;
+  flex-direction: column;
   margin: 200px 50px 50px 50px;
   font-family: sans-serif;
 }
@@ -16,6 +17,11 @@
   font-size: 0;
 }
 
+.currentPlayer {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 32px;
+}
 .cell {
   width: 100px;
   height: 100px;
@@ -26,7 +32,43 @@
   cursor: pointer;
   vertical-align: middle;
 }
-
+.logo {
+  text-align: center;
+  font-size: 48px;
+}
 .cell:hover {
   background-color: #f1f1f1;
+}
+
+.winning-message {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 5rem;
+  flex-direction: column;
+}
+
+.winning-message button {
+  font-size: 3rem;
+  background-color: white;
+  border: 1px solid black;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+}
+
+.winning-message button:hover {
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+
+.winning-message.show {
+  display: flex;
 }

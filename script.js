@@ -1,5 +1,9 @@
 const gameArea = document.querySelector(".area");
 const cells = document.querySelectorAll(".cell");
+const currentPlayerInfo = document.querySelector(".currentPlayer span");
+const winningMessageText = document.querySelector("[data-winning-message-text");
+const winningMessageScreen = document.querySelector(".winning-message");
+const restartButton = document.querySelector("#restartButton");
 
 let player = "X";
 
@@ -14,22 +18,68 @@ const winCombinations = [
   [3, 5, 7],
 ];
 
-function clickCell() {
+const showFinalScreen = (message) => {
+  winningMessageText.innerHTML = message;
+  winningMessageScreen.classList.add("show");
+};
+
+const restart = () => {
+  winningMessageScreen.classList.remove("show");
+  player = "X";
+  cells.forEach((cell) => (cell.textContent = ""));
+};
+
+const checkWinCombinations = (data) => {
+  let winFlag = false;
+  for (let win of winCombinations) {
+    for (let position of win) {
+      winFlag = false;
+      for (let dataPosition of data) {
+        if (dataPosition == position) {
+          winFlag = true;
+          break;
+        }
+      }
+      if (!winFlag) break;
+    }
+    if (winFlag) break;
+  }
+  return winFlag;
+};
+
+const clickCell = (e) => {
+  let currentCell = e.target;
   let gameData = [];
-  if (!this.textContent) this.textContent = player;
-  else {
+  console.log(currentCell);
+  if (!currentCell.textContent) {
+    currentCell.textContent = player;
+  } else {
     alert("Cell not available");
     return;
   }
 
-  console.log("CELLS:", cells);
   cells.forEach((cell) => {
-    console.log("Cell: ", cell);
     if (cell.textContent == player)
-      gameData.push(parseInt(cell.getAttribute("pos")));
+      gameData.push(parseInt(cell.getAttribute("data-pos")));
   });
-  player = player == "X" ? "O" : "X";
-}
 
-for (let i = 0; i < cells.length; i++)
-  cells[i].addEventListener("click", clickCell);
+  if (checkWinCombinations(gameData)) {
+    showFinalScreen(`Winner is ${player}`);
+  } else {
+    let draw = true;
+    for (let i of cells) {
+      if (i.textContent == "") {
+        draw = false;
+        break;
+      }
+    }
+    if (draw) showFinalScreen("It's a draw!");
+  }
+
+  player = player == "X" ? "O" : "X";
+  currentPlayerInfo.textContent = `It's Player's ${player} turn`;
+  console.log("GameData:", gameData);
+};
+
+cells.forEach((cell) => cell.addEventListener("click", clickCell));
+restartButton.addEventListener("click", restart);
