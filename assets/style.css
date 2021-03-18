@@ -7,7 +7,7 @@ body.black {
 }
 .content {
   display: flex;
-  justify-content: row;
+  flex-direction: row;
   align-items: center;
 }
 .logo.black {
@@ -23,10 +23,10 @@ body.black {
 .game-buttons {
   background-color: #f5eceb;
   color: black;
-  padding: 25px 12px;
+  padding: 15px;
   text-decoration: none;
   font-size: 22px;
-  margin-left: 130px;
+  margin-left: 100px;
 }
 .game-buttons.selected {
   background-color: #05a86b;
@@ -166,4 +166,15 @@ th.black {
 
 .winning-message.show {
   display: flex;
+}
+
+@media (max-width: 800px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .game-buttons {
+    margin-left: auto;
+  }
 }
