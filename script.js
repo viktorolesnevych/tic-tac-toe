@@ -16,6 +16,12 @@ victorySound.src = "assets/victory.mp3";
 //beginning player value
 let player = "X";
 
+let statistics = {
+  X: 0,
+  O: 0,
+  Draw: 0,
+};
+
 //winning conditions
 const winCombinations = [
   [1, 2, 3],
@@ -64,6 +70,12 @@ const restart = () => {
   });
 };
 
+const updateStatisticsTable = (id) => {
+  document.querySelector(`#s${id}`).textContent = JSON.parse(
+    localStorage.getItem("Statistics")
+  )[id];
+};
+
 const setFromLocalStorage = (e) => {
   if (localStorage.length > 0) {
     let values = ["X", "O"];
@@ -76,6 +88,9 @@ const setFromLocalStorage = (e) => {
         );
       }
     });
+    updateStatisticsTable("X");
+    updateStatisticsTable("O");
+    updateStatisticsTable("Draw");
     //checking here if its X or O turn after connection was lost
     if (positions.length == 1) {
       player = "O";
@@ -109,7 +124,7 @@ const checkWinCombinations = (data) => {
     }
   }
   //Doing like this as I need winning combination to higlight it (I know its not the best practice)
-  return { combination: winArrayCombination, flag: winFlag };
+  return { combination: winArrayCombination, result: winFlag };
 };
 
 //main event
@@ -128,14 +143,21 @@ const clickCell = (e) => {
     localStorage.setItem(player, gameData);
 
     let winReponse = checkWinCombinations(gameData);
-    if (winReponse.flag) {
+    if (winReponse.result) {
       victorySound.play();
       localStorage.clear();
+      statistics[player]++;
+      localStorage.setItem("Statistics", JSON.stringify(statistics));
+      console.log(localStorage);
+      updateStatisticsTable(player);
       highlightCombination(winReponse.combination);
       showFinalScreen(`Winner is ${player}`);
     } else {
       if (checkIfDraw()) {
         localStorage.clear();
+        statistics.Draw++;
+        localStorage.setItem("Statistics", JSON.stringify(statistics));
+        updateStatisticsTable("Draw");
         showFinalScreen("It's a draw!");
       }
     }
@@ -144,6 +166,8 @@ const clickCell = (e) => {
     changeCurrentPlayerInfo(player);
   } else failureSound.play();
 };
+
+const computerTurn = (gamedata) => {};
 
 cells.forEach((cell) => cell.addEventListener("click", clickCell));
 restartButton.addEventListener("click", restart);
