@@ -28,6 +28,9 @@ body.black {
   font-size: 22px;
   margin-left: 130px;
 }
+.game-buttons.selected {
+  background-color: #05a86b;
+}
 .game-buttons.black {
   color: #f5eceb;
   background-color: #545454;
@@ -36,7 +39,7 @@ body.black {
   cursor: not-allowed;
 }
 .game-buttons:hover {
-  background-color: #545454;
+  background-color: #151515;
   cursor: pointer;
   color: white;
 }
@@ -44,7 +47,9 @@ body.black {
   background-color: #05a86b;
   color: #2d2e30;
 }
-
+.game-buttons.black.selected {
+  background-color: orangered;
+}
 .statistics {
   display: flex;
   width: 33vw;
@@ -101,13 +106,6 @@ th.black {
   color: #05a86b;
   background-color: #d7b61b;
 }
-
-.cell img {
-  width: 100%;
-  color: #f5eceb;
-  font-size: 90px;
-}
-
 .cell.selected {
   cursor: not-allowed;
 }

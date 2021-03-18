@@ -7,6 +7,7 @@ const winningMessageScreen = document.querySelector(".winning-message");
 const restartButton = document.querySelector("#restartButton");
 const localDataBt = document.querySelector("#localData");
 const changeColor = document.querySelector("#colorBt");
+const compBt = document.querySelector("#compBt");
 const beepSound = new Audio();
 const failureSound = new Audio();
 const victorySound = new Audio();
@@ -24,6 +25,7 @@ let statistics = {
 };
 
 let colorScheme = false;
+let playWithComputer = false;
 
 //winning conditions
 const winCombinations = [
@@ -72,6 +74,7 @@ const restart = () => {
     cell.classList.remove("winning");
   });
 };
+const getRandom = (a) => parseInt(Math.random() * a);
 
 const updateStatisticsTable = (id) => {
   document.querySelector(`#s${id}`).textContent = JSON.parse(
@@ -168,10 +171,57 @@ const clickCell = (e) => {
 
     player = player == "X" ? "O" : "X";
     changeCurrentPlayerInfo(player);
+    console.log(getCellUnoccupiedPositions());
+    let i = computerTurn(gameData);
+    if (playWithComputer) if (player == "O") cells[i].click();
   } else failureSound.play();
 };
+//Spent ~3 hours to get these functions
+const checkPotentialWinPosition = (gameData) => {
+  let tmp = 0;
+  let potentialWin = "";
+  for (let combination of winCombinations) {
+    tmp = 0;
+    for (let position of combination) {
+      let tmpStart = tmp;
+      for (let userPosition of gameData) if (position == userPosition) tmp++;
+      if (tmp == tmpStart) potentialWin = position;
+    }
+    if (tmp == 2) {
+      if (
+        getCellUnoccupiedPositions().some(
+          (position) => position == potentialWin
+        )
+      )
+        return potentialWin;
+    }
+  }
+  let availableCells = getCellUnoccupiedPositions();
+  return availableCells[getRandom(availableCells.length - 1)];
+};
 
-const computerTurn = (gamedata) => {};
+const getCellUnoccupiedPositions = () => {
+  let tmp = [];
+  cells.forEach((cell, index) => {
+    if (!cell.textContent) tmp.push(index + 1);
+  });
+  return tmp;
+};
+
+const computerTurn = (gamedata) => {
+  let returnIndex = "";
+  if (gamedata.length == 1) {
+    if (gamedata[0] == "5") {
+      let tmp = ["1", "3", "7", "9"];
+      let index = getRandom(tmp.length);
+      returnIndex = tmp[index];
+      console.log("Return Index");
+    } else returnIndex = "5";
+  } else if (gamedata.length > 1) {
+    returnIndex = checkPotentialWinPosition(gamedata);
+  }
+  return parseInt(returnIndex) - 1;
+};
 
 cells.forEach((cell) => cell.addEventListener("click", clickCell));
 restartButton.addEventListener("click", restart);
@@ -181,7 +231,6 @@ localDataBt.addEventListener("mouseover", (e) => {
     ? e.target.classList.remove("not-allowed")
     : e.target.classList.add("not-allowed");
 });
-
 changeColor.addEventListener("click", () => {
   let elementList = document.getElementsByTagName("*");
   if (!colorScheme) {
@@ -193,4 +242,9 @@ changeColor.addEventListener("click", () => {
     for (let i = 0; i < elementList.length; i++)
       elementList[i].classList.remove("black");
   }
+});
+compBt.addEventListener("click", (e) => {
+  if (!playWithComputer) e.target.classList.add("selected");
+  else e.target.classList.remove("selected");
+  playWithComputer = !playWithComputer;
 });
