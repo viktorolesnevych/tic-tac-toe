@@ -6,6 +6,7 @@ const winningMessageText = document.querySelector("[data-winning-message-text");
 const winningMessageScreen = document.querySelector(".winning-message");
 const restartButton = document.querySelector("#restartButton");
 const localDataBt = document.querySelector("#localData");
+const changeColor = document.querySelector("#colorBt");
 const beepSound = new Audio();
 const failureSound = new Audio();
 const victorySound = new Audio();
@@ -21,6 +22,8 @@ let statistics = {
   O: 0,
   Draw: 0,
 };
+
+let colorScheme = false;
 
 //winning conditions
 const winCombinations = [
@@ -77,9 +80,11 @@ const updateStatisticsTable = (id) => {
 };
 
 const setFromLocalStorage = (e) => {
-  if (localStorage.length > 0) {
+  if (localStorage.length > 1) {
     let values = ["X", "O"];
     let positions = [];
+    restart();
+    statistics = JSON.parse(localStorage.getItem("Statistics"));
     values.forEach((value, index) => {
       if (localStorage.getItem(value)) {
         positions.push(localStorage.getItem(value).split(","));
@@ -88,19 +93,19 @@ const setFromLocalStorage = (e) => {
         );
       }
     });
-    updateStatisticsTable("X");
-    updateStatisticsTable("O");
-    updateStatisticsTable("Draw");
+    console.log(localStorage);
     //checking here if its X or O turn after connection was lost
     if (positions.length == 1) {
       player = "O";
       changeCurrentPlayerInfo(player);
     } else if (positions[0].length > positions[1].length) {
-      console.log(positions);
       player = "O";
       changeCurrentPlayerInfo(player);
     }
   }
+  updateStatisticsTable("X");
+  updateStatisticsTable("O");
+  updateStatisticsTable("Draw");
 };
 
 //winning logic
@@ -148,7 +153,6 @@ const clickCell = (e) => {
       localStorage.clear();
       statistics[player]++;
       localStorage.setItem("Statistics", JSON.stringify(statistics));
-      console.log(localStorage);
       updateStatisticsTable(player);
       highlightCombination(winReponse.combination);
       showFinalScreen(`Winner is ${player}`);
@@ -176,4 +180,17 @@ localDataBt.addEventListener("mouseover", (e) => {
   localStorage.length > 0
     ? e.target.classList.remove("not-allowed")
     : e.target.classList.add("not-allowed");
+});
+
+changeColor.addEventListener("click", () => {
+  let elementList = document.getElementsByTagName("*");
+  if (!colorScheme) {
+    colorScheme = !colorScheme;
+    for (let i = 0; i < elementList.length; i++)
+      elementList[i].classList.add("black");
+  } else {
+    colorScheme = !colorScheme;
+    for (let i = 0; i < elementList.length; i++)
+      elementList[i].classList.remove("black");
+  }
 });
