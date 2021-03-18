@@ -5,6 +5,7 @@ const currentPlayerInfo = document.querySelector(".currentPlayer span");
 const winningMessageText = document.querySelector("[data-winning-message-text");
 const winningMessageScreen = document.querySelector(".winning-message");
 const restartButton = document.querySelector("#restartButton");
+const localDataBt = document.querySelector("#localData");
 const beepSound = new Audio();
 const failureSound = new Audio();
 const victorySound = new Audio();
@@ -37,6 +38,20 @@ const highlightCombination = (array) => {
   array.forEach((position) => cells[position - 1].classList.add("winning"));
 };
 
+const changeCurrentPlayerInfo = (player) =>
+  (currentPlayerInfo.textContent = `It's Player's ${player} turn`);
+
+const checkIfDraw = () => {
+  let draw = true;
+  for (let i of cells) {
+    if (i.textContent == "") {
+      draw = false;
+      break;
+    }
+  }
+  return draw;
+};
+
 //start new game
 const restart = () => {
   winningMessageScreen.classList.remove("show");
@@ -47,6 +62,30 @@ const restart = () => {
     cell.classList.remove("selected");
     cell.classList.remove("winning");
   });
+};
+
+const setFromLocalStorage = (e) => {
+  if (localStorage.length > 0) {
+    let values = ["X", "O"];
+    let positions = [];
+    values.forEach((value, index) => {
+      if (localStorage.getItem(value)) {
+        positions.push(localStorage.getItem(value).split(","));
+        positions[index].forEach(
+          (position) => (cells[position - 1].textContent = value)
+        );
+      }
+    });
+    //checking here if its X or O turn after connection was lost
+    if (positions.length == 1) {
+      player = "O";
+      changeCurrentPlayerInfo(player);
+    } else if (positions[0].length > positions[1].length) {
+      console.log(positions);
+      player = "O";
+      changeCurrentPlayerInfo(player);
+    }
+  }
 };
 
 //winning logic
@@ -77,6 +116,7 @@ const checkWinCombinations = (data) => {
 const clickCell = (e) => {
   let currentCell = e.target;
   let gameData = [];
+
   if (!currentCell.textContent) {
     beepSound.play();
     currentCell.textContent = player;
@@ -86,7 +126,7 @@ const clickCell = (e) => {
         gameData.push(parseInt(cell.getAttribute("data-pos")));
     });
     localStorage.setItem(player, gameData);
-    console.log("Local Storage:", localStorage);
+
     let winReponse = checkWinCombinations(gameData);
     if (winReponse.flag) {
       victorySound.play();
@@ -94,20 +134,22 @@ const clickCell = (e) => {
       highlightCombination(winReponse.combination);
       showFinalScreen(`Winner is ${player}`);
     } else {
-      let draw = true;
-      for (let i of cells) {
-        if (i.textContent == "") {
-          draw = false;
-          break;
-        }
+      if (checkIfDraw()) {
+        localStorage.clear();
+        showFinalScreen("It's a draw!");
       }
-      if (draw) showFinalScreen("It's a draw!");
     }
 
     player = player == "X" ? "O" : "X";
-    currentPlayerInfo.textContent = `It's Player's ${player} turn`;
+    changeCurrentPlayerInfo(player);
   } else failureSound.play();
 };
 
 cells.forEach((cell) => cell.addEventListener("click", clickCell));
 restartButton.addEventListener("click", restart);
+localDataBt.addEventListener("click", setFromLocalStorage);
+localDataBt.addEventListener("mouseover", (e) => {
+  localStorage.length > 0
+    ? e.target.classList.remove("not-allowed")
+    : e.target.classList.add("not-allowed");
+});

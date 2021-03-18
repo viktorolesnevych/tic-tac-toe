@@ -22,6 +22,9 @@
   font-size: 22px;
   margin-left: 130px;
 }
+#localData.not-allowed {
+  cursor: not-allowed;
+}
 .game-buttons:hover {
   background-color: black;
   cursor: pointer;
