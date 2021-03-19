@@ -19,6 +19,7 @@ victorySound.src = "assets/victory.mp3";
 //beginning player value
 let player = "X";
 
+//storing game rounds statistics in this object
 let statistics = {
   X: 0,
   O: 0,
@@ -46,13 +47,15 @@ const showFinalScreen = (message) => {
   winningMessageScreen.classList.add("show");
 };
 
+//highlight winning cells
 const highlightCombination = (array) => {
   array.forEach((position) => cells[position - 1].classList.add("winning"));
 };
-
+//change player label
 const changeCurrentPlayerInfo = (player) =>
   (currentPlayerInfo.textContent = `It's Player's ${player} turn`);
 
+//checks all cells for draw cindition
 const checkIfDraw = () => {
   let draw = true;
   for (let i of cells) {
@@ -75,8 +78,10 @@ const restart = () => {
     cell.classList.remove("winning");
   });
 };
+
 const getRandom = (a) => parseInt(Math.random() * a);
 
+//update statistics table with fresh data
 const updateStatisticsTable = (id = 0) => {
   if (id == 0) {
     document
@@ -88,6 +93,7 @@ const updateStatisticsTable = (id = 0) => {
     )[id];
 };
 
+//set data back from local storage
 const setFromLocalStorage = (e) => {
   if (localStorage.length > 1) {
     let values = ["X", "O"];
@@ -185,7 +191,8 @@ const clickCell = (e) => {
       }
   } else failureSound.play();
 };
-//AI Functions here
+
+//get potential win position or random if no other, helps AI function
 const checkPotentialWinPosition = (gameData) => {
   let tmp = 0;
   let potentialWin = "";
@@ -209,6 +216,7 @@ const checkPotentialWinPosition = (gameData) => {
   return availableCells[getRandom(availableCells.length - 1)];
 };
 
+//returns array of empty cells
 const getCellUnoccupiedPositions = () => {
   let tmp = [];
   cells.forEach((cell, index) => {
@@ -217,6 +225,7 @@ const getCellUnoccupiedPositions = () => {
   return tmp;
 };
 
+//AI algorythm
 const computerTurn = (gamedata) => {
   let returnIndex = "";
   if (gamedata.length == 1) {
@@ -232,6 +241,7 @@ const computerTurn = (gamedata) => {
   return parseInt(returnIndex) - 1;
 };
 
+//EVENT listeners here
 cells.forEach((cell) => cell.addEventListener("click", clickCell));
 restartButton.addEventListener("click", restart);
 localDataBt.addEventListener("click", setFromLocalStorage);
