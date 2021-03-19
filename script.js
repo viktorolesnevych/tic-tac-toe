@@ -138,7 +138,7 @@ const checkWinCombinations = (data) => {
     }
   }
 
-  //Doing like this as I need winning combination to higlight it (I know its not the best practice)
+  //Needed to return two values, and made it this way
   return { combination: winArrayCombination, result: winFlag };
 };
 
@@ -185,7 +185,7 @@ const clickCell = (e) => {
       }
   } else failureSound.play();
 };
-//Spent ~3 hours to get these functions
+//AI Functions here
 const checkPotentialWinPosition = (gameData) => {
   let tmp = 0;
   let potentialWin = "";
