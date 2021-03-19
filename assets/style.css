@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
 }
+
 body.black {
   background-color: #16161a;
 }
@@ -23,9 +24,10 @@ body.black {
 .game-buttons {
   background-color: #f5eceb;
   color: black;
-  padding: 15px;
+  padding: 10px;
   text-decoration: none;
   font-size: 22px;
+  margin-top: 30px;
   margin-left: 100px;
 }
 .game-buttons.selected {
@@ -56,14 +58,23 @@ body.black {
 }
 td,
 th {
-  border: 1px solid #999;
-  padding: 0.5rem;
+  border: 1px solid black;
   font-size: 22px;
-  background-color: #f5eceb;
 }
-td,
+th {
+  background-color: black;
+  color: white;
+}
+td {
+  background-color: white;
+}
+th:hover {
+  cursor: pointer;
+}
+td.black,
 th.black {
-  background-color: #f5eceb;
+  color: white;
+  background-color: #545454;
 }
 .main_content {
   display: flex;

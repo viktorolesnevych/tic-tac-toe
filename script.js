@@ -8,6 +8,7 @@ const restartButton = document.querySelector("#restartButton");
 const localDataBt = document.querySelector("#localData");
 const changeColor = document.querySelector("#colorBt");
 const compBt = document.querySelector("#compBt");
+const tableHead = document.querySelector("#tableStat").querySelector("th");
 const beepSound = new Audio();
 const failureSound = new Audio();
 const victorySound = new Audio();
@@ -76,10 +77,15 @@ const restart = () => {
 };
 const getRandom = (a) => parseInt(Math.random() * a);
 
-const updateStatisticsTable = (id) => {
-  document.querySelector(`#s${id}`).textContent = JSON.parse(
-    localStorage.getItem("Statistics")
-  )[id];
+const updateStatisticsTable = (id = 0) => {
+  if (id == 0) {
+    document
+      .querySelectorAll("#tableStat span")
+      .forEach((span) => (span.textContent = "0"));
+  } else
+    document.querySelector(`#s${id}`).textContent = JSON.parse(
+      localStorage.getItem("Statistics")
+    )[id];
 };
 
 const setFromLocalStorage = (e) => {
@@ -131,6 +137,7 @@ const checkWinCombinations = (data) => {
       break;
     }
   }
+
   //Doing like this as I need winning combination to higlight it (I know its not the best practice)
   return { combination: winArrayCombination, result: winFlag };
 };
@@ -171,9 +178,11 @@ const clickCell = (e) => {
 
     player = player == "X" ? "O" : "X";
     changeCurrentPlayerInfo(player);
-    console.log(getCellUnoccupiedPositions());
-    let i = computerTurn(gameData);
-    if (playWithComputer) if (player == "O") cells[i].click();
+    if (playWithComputer)
+      if (player == "O") {
+        let i = computerTurn(gameData);
+        cells[i].click();
+      }
   } else failureSound.play();
 };
 //Spent ~3 hours to get these functions
@@ -247,4 +256,13 @@ compBt.addEventListener("click", (e) => {
   if (!playWithComputer) e.target.classList.add("selected");
   else e.target.classList.remove("selected");
   playWithComputer = !playWithComputer;
+});
+tableHead.addEventListener("click", () => {
+  localStorage.clear();
+  statistics = {
+    X: 0,
+    O: 0,
+    Draw: 0,
+  };
+  updateStatisticsTable(0);
 });

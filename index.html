@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
     <link rel="stylesheet" href="assets/style.css">
     <title>Document</title>
 </head>
@@ -13,17 +17,17 @@
     <div class="logo">
         TIC TAC TOE
     </div>
-    <div class="content">
+    <div class="content animate__animated animate__bounceInDown">
         <div class="buttons">
             <button id="colorBt"class="game-buttons">Change colors</button>
             <button id="localData" class="game-buttons">Get local data</button>
             <button id="compBt" class="game-buttons">Play with computer</button>
         </div>
-        <div class="main_content">
-            <div class="currentPlayer">
+        <div class="main_content animate__animated animate__bounceInDown" >
+            <div class="currentPlayer" >
                 <span>It's Players X turn</span>
             </div>
-            <div id="area">
+            <div id="area" class="animate__animated animate__flipInX">
                 <div class="cell" data-pos="1"></div>
                 <div class="cell" data-pos="2"></div>
                 <div class="cell" data-pos="3"></div>
@@ -36,8 +40,8 @@
             </div>
         </div>
         <div class="statistics">
-            <table>
-                <th colspan="2">Game statistic</th>
+            <table id='tableStat'>
+                <th colspan="2" title="CLICK TO CLEAR">Game statistics</th>
                 <tr>
                     <td>X</td>
                     <td><span id="sX">0</span></td>
