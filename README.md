@@ -23,7 +23,6 @@ user and if he wins stops the game.
 * If user loses connection, he can still get back his current game state together with previous game roonds statistics with a help of browser local storage.
 * Some of the sound effects in the game
 * Dark and White UI themes
-* Web site responsiveness for mobile browsers
 * AI implemented, which will definitely do his best to not let you win the game.
 ## Screenshots
 ![White theme](https://raw.githubusercontent.com/viktorolesnevych/tic-tac-toe/master/assets/whiteTheme.png)
